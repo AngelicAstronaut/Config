@@ -2,17 +2,22 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ inputs, config, pkgs, lib, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./hyprland.nix
     ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+
+  system.autoUpgrade.enable = true;
+  system.autoUpgrade.dates = "weekly";
 
   networking.hostName = "astronaut"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -89,8 +94,8 @@
     ];
   };
 
-  # Install firefox.
   programs.firefox.enable = true;
+  programs.waybar.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -100,15 +105,24 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-    kitty
     foot
-    waybar
+    pkgs.zed-editor
+    pkgs.librewolf
+    pkgs.zed-editor
+
   ];
 
-   programs = {
-    hyprland.enable = true;
-
+  nix.settings = {
+    substituters = ["https://hyprland.cachix.org"];
+    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
   };
+
+  # Automatic cleanup
+  nix.gc.automatic = true;
+  nix.gc.dates = "daily";
+  nix.gc.options = "--delete-older-than +5";
+  nix.settings.auto-optimise-store = true;
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
