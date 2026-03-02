@@ -96,6 +96,8 @@
 
   programs.firefox.enable = true;
   programs.waybar.enable = true;
+  programs.hyprland.enable = true;
+  # programs.xwayland.enable = true; #checking if it works
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
