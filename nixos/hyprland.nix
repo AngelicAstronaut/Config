@@ -10,6 +10,11 @@
         kitty
         waybar
         gnome-icon-theme
+        #util
+        brightnessctl
+        playerctl
+        networkmanagerapplet
+        hyprpaper
     ];
 }
 
