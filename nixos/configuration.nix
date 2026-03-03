@@ -50,6 +50,7 @@
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
+  services.fprintd.enable = true;
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
@@ -94,7 +95,7 @@
     ];
   };
 
-  programs.firefox.enable = true;
+  # programs.firefox.enable = true;
   programs.waybar.enable = true;
   programs.hyprland.enable = true;
   # programs.xwayland.enable = true; #checking if it works
@@ -107,11 +108,11 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
+    rofi
     foot
     pkgs.zed-editor
     pkgs.librewolf
     pkgs.zed-editor
-
   ];
 
   nix.settings = {
