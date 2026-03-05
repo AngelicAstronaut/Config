@@ -1,195 +1,143 @@
 {
-  "layer": "top",
-  "position": "top",
-  "height": 30,
-  "spacing": 4,
-  "modules-left": [
-    // "hyprland/workspaces",
-    "wlr/taskbar",
-    "hyprland/mode",
-    "hyprland/scratchpad",
-    "custom/media"
-  ],
-  "modules-center": [
-    "hyprland/window"
-  ],
-  "modules-right": [
-    "mpd",
-    //"idle_inhibitor",
-    "pulseaudio",
-    "network",
-    "tray",
-    "power-profiles-daemon",
-    "memory",
-    "temperature",
-    "cpu",
-    "custom/temperature_gpu",
-    "custom/gpu",
-    // "backlight",
-    // "keyboard-state",
-    // "hyprland/language",
-    "battery",
-    "battery#bat2",
-    "clock",
-    "custom/power"
-  ],
-  // https://github.com/Alexays/Waybar/issues/4059
-  "wlr/taskbar": {
-    "format": "{icon}",
-    "icon-size": 24,
+"layer": "top",
+"position": "top",
+"height": 10,
+"margin-bottom":0,
+"margin-top":0,
+
+"modules-left": ["sway/mode","cpu","memory","network","mpd"],
+"modules-center": ["sway/workspaces","hyprland/workspaces"],
+"modules-right":  ["tray","idle_inhibitor","pulseaudio","backlight","battery","clock"],
+
+"battery": {
+  "states": {
+  "warning": 30,
+  "critical": 15
+  },
+  "format": "{icon}&#8239;{capacity}%",
+  "format-charging": "&#8239;{capacity}%",
+  "format-plugged": "&#8239;{capacity}%",
+  "format-alt": "{icon} {time}",
+  "format-icons": ["", "", "", "", "", "", ""]
+},
+"hyprland/workspaces": {
+     "sort-by-name": true,
+     "on-click": "activate"
+},
+"hyprland/window": {
+    "max-length": 200,
+    "separate-outputs": true
+},
+"sway/mode": {
+    "format": "<span style=\"italic\">{}</span>"
+},
+"tray": {
+    "icon-size": 16,
+    "spacing": 6
+},
+"clock": {
+    "locale": "C",
+    "format": " {:%I:%M %p}",
+    "format-alt": " {:%a,%b %d}" // Icon: calendar-alt
+},
+"cpu": {
+    "format": "&#8239;{usage}%",
     "tooltip": false,
-  },
-  "keyboard-state": {
-    "numlock": true,
-    "capslock": true,
-    "format": "{name} {icon}",
-    "format-icons": {
-      "locked": "",
-      "unlocked": ""
-    }
-  },
-  "mpd": {
-    "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
-    "format-disconnected": "Disconnected ",
-    "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
-    "unknown-tag": "N/A",
-    "interval": 5,
-    "consume-icons": {
-      "on": " "
-    },
-    "random-icons": {
-      "off": "<span color=\"#f53c3c\"></span> ",
-      "on": " "
-    },
-    "repeat-icons": {
-      "on": " "
-    },
-    "single-icons": {
-      "on": "1 "
-    },
-    "state-icons": {
-      "paused": "",
-      "playing": ""
-    },
-    "tooltip-format": "MPD (connected)",
-    "tooltip-format-disconnected": "MPD (disconnected)"
-  },
-  "idle_inhibitor": {
+    "on-click": "kitty -e 'htop'"
+},
+"memory": {
+    "interval": 30,
+    "format": " {used:0.2f}GB",
+    "max-length": 10,
+    "tooltip": false,
+    "warning": 70,
+    "critical": 90
+},
+"network": {
+  "interval": 2,
+  "format-wifi": " {signalStrength}%",
+  "format-ethernet": "",
+  "format-linked": " {ipaddr}",
+  "format-disconnected": " Disconnected",
+  "format-disabled": "",
+  "tooltip": false,
+  "max-length": 20,
+  "min-length": 6,
+  "format-alt": "{essid}",
+},
+"idle_inhibitor": {
     "format": "{icon}",
     "format-icons": {
-      "activated": "",
-      "deactivated": ""
+        "activated": "",
+        "deactivated": ""
     }
+},
+"backlight": {
+    // "device": "acpi_video1",
+    "format": "{icon}&#8239;{percent}%",
+    "format-icons": ["", ""],
+    "on-scroll-down": "brightnessctl -c backlight set 1%-",
+    "on-scroll-up": "brightnessctl -c backlight set +1%"
+},
+"pulseaudio": {
+  // "scroll-step": 1, // %, can be a float
+  "format": "{icon} {volume}% {format_source}",
+  "format-bluetooth": "{icon} {volume}% {format_source}",
+  "format-bluetooth-muted": " {format_source}",
+  "format-muted": "  {format_source}",
+  "format-source": " {volume}%",
+  "format-source-muted": "",
+  "format-icons": {
+    "headphone": "",
+    "hands-free": "",
+    "headset": "🎧",
+    "phone": "",
+    "portable": "",
+    "car": "",
+    "default": ["", "", ""]
   },
-  "tray": {
-    "spacing": 10
+  "on-click": "pavucontrol"
+},
+"mpd": {
+  "format": "{stateIcon} {artist} - {title}",
+  "format-disconnected": "🎶",
+  "format-stopped": "♪",
+  "interval": 10,
+  "consume-icons": {
+    "on": " " // Icon shows only when "consume" is on
   },
-  "clock": {
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format-alt": "{:%Y-%m-%d}"
+  "random-icons": {
+    "off": "<span color=\"#f53c3c\"></span> ", // Icon grayed out when "random" is off
+    "on": " "
   },
-  "memory": {
-    "format": "{}% "
+  "repeat-icons": {
+    "on": " "
   },
-  // cpu
-  "cpu": {
-    "format": "{usage}% ",
-    "tooltip": false
+  "single-icons": {
+    "on": "1 "
   },
-  "temperature": {
-    // "thermal-zone": 5,
-    // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-    "critical-threshold": 80,
-    "format": "{temperatureC}°C",
-    "format-icons": ["", "", ""]
+  "state-icons": {
+    "paused": "",
+    "playing": ""
   },
-  // gpu
-  "custom/gpu": {
-    "format": "{}%",
-    "interval": 1,
-    "return-type": "",
-    "exec": "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader | sed 's/%//'"
-  },
-  "custom/temperature_gpu": {
-    "format": "{}°C",
-    "interval": 1,
-    "return-type": "",
-    "exec": "nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader"
-  },
-  "battery": {
-    "states": {
-      "good": 95,
-      "warning": 30,
-      "critical": 15
-    },
-    "format": "{capacity}% {icon}",
-    "format-full": "{capacity}% {icon}",
-    "format-charging": "{capacity}% ",
-    "format-plugged": "{capacity}% ",
-    "format-alt": "{time} {icon}",
-    "format-icons": ["", "", "", "", ""]
-  },
-  "battery#bat2": {
-    "bat": "BAT2"
-  },
-  "power-profiles-daemon": {
-    "format": "{icon}",
-    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
-    "tooltip": true,
-    "format-icons": {
-      "default": "",
-      "performance": "",
-      "balanced": "",
-      "power-saver": ""
-    }
-  },
-  "network": {
-    "format-wifi": "{essid} ({signalStrength}%) ",
-    "format-ethernet": "{ipaddr}/{cidr} ",
-    "tooltip-format": "{ifname} via {gwaddr} ",
-    "format-linked": "{ifname} (No IP) ",
-    "format-disconnected": "Disconnected ⚠",
-    "format-alt": "{ifname}: {ipaddr}/{cidr}"
-  },
-  "pulseaudio": {
-    "format": "{volume}% {icon} {format_source}",
-    "format-bluetooth": "{volume}% {icon} {format_source}",
-    "format-bluetooth-muted": " {icon} {format_source}",
-    "format-muted": " {format_source}",
-    "format-source": "{volume}% ",
-    "format-source-muted": "",
-    "format-icons": {
-      "headphone": "",
-      "hands-free": "",
-      "headset": "",
-      "phone": "",
-      "portable": "",
-      "car": "",
-      "default": ["", "", ""]
-    },
-    "on-click": "pavucontrol"
-  },
-  "custom/media": {
-    "format": "{icon} {text}",
+  "tooltip-format": "MPD (connected)",
+  "tooltip-format-disconnected": "MPD (disconnected)",
+  "max-length": 35
+},
+"custom/recorder": {
+    "format": " Rec",
+    "format-disabled": " Off-air", //An empty format will hide the module.
     "return-type": "json",
-    "max-length": 40,
-    "format-icons": {
-      "spotify": "",
-      "default": "🎜"
-    },
-    "escape": true,
-    "exec": "$HOME/.config/waybar/modules/mediaplayer.py 2> /dev/null"
-  },
-  "custom/power": {
-    "format": "⏻",
-    "tooltip": false,
-    "menu": "on-click",
-    "menu-file": "$HOME/.config/waybar/modules/power_menu.xml",
-    "menu-actions": {
-      "shutdown": "shutdown -h now",
-      "reboot": "reboot",
-      "suspend": "systemctl suspend"
-      // "hibernate": "systemctl hibernate"
-    }
-  }
+    "interval": 1,
+    "exec": "echo '{\"class\": \"recording\"}'",
+    "exec-if": "pgrep wf-recorder",
+},
+"custom/audiorec": {
+    "format": "♬ Rec",
+    "format-disabled": "♬ Off-air", //An empty format will hide the module.
+    "return-type": "json",
+    "interval": 1,
+    "exec": "echo '{\"class\": \"audio recording\"}'",
+    "exec-if": "pgrep ffmpeg",
+},
 }
