@@ -94,10 +94,10 @@
       thunderbird
     ];
   };
-
-  # programs.firefox.enable = true;
   programs.waybar.enable = true;
-  programs.hyprland.enable = true;
+  programs.hyprland = {
+    enable = true;
+  };
   # programs.xwayland.enable = true; #checking if it works
 
   # Allow unfree packages
@@ -109,11 +109,14 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     rofi
+    hyprpaper
     foot
     pkgs.zed-editor
     pkgs.librewolf
     pkgs.zed-editor
   ];
+
+  # programs.firefox.enable = true;
 
   nix.settings = {
     substituters = ["https://hyprland.cachix.org"];
